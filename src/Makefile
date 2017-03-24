@@ -5,8 +5,8 @@ TARGET=libnetengine.a
 
 BUILD_PATH ?= .
 
-MYPUBINC=../../
-MYPUBLIB=../../lib
+MYPUBINC=../../codelib
+MYPUBLIB=../../codelib/lib
 
 CFLAGS = -g -O2 -Wall -fPIC $(MYCFLAGS) -I../inc/ -I$(MYPUBINC) -D__linux__ --shared
 # CFLAGS += -D_DEBUG -DDEBUG

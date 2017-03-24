@@ -3,8 +3,8 @@ TARGET=test_client
 
 BUILD_PATH ?= .
 
-MYPUBINC=/home/life/src/mycode/publib
-MYPUBLIB=/home/life/src/mycode/publib/lib
+MYPUBINC=../../codelib
+MYPUBLIB=../../codelib/lib
 
 CFLAGS = -g -O2 -Wall $(MYCFLAGS) -I../inc/ -I../test_server/inc -I$(MYPUBINC) -D_linux
 # CFLAGS += -D_DEBUG -DDEBUG

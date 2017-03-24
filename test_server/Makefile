@@ -3,14 +3,14 @@ TARGET=test_server
 
 BUILD_PATH ?= .
 
-MYPUBINC=/home/life/src/mycode/publib
-MYPUBLIB=/home/life/src/mycode/publib/lib
+MYPUBINC=../../codelib
+MYPUBLIB=../../codelib/lib
 
 CFLAGS = -g -O2 -Wall $(MYCFLAGS) -I../inc/ -I./inc -I$(MYPUBINC) -D_linux
 # CFLAGS += -D_DEBUG -DDEBUG
 
 LIB := -lpublib -lpthread
-MYLIB := -lnetengine
+MYLIB := -L../lib -lnetengine -lpublib
 
 ALLCFILE=test_server_main
 
