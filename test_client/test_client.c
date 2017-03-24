@@ -68,7 +68,12 @@ static int on_recv(struct netengine *net, int id, char *pdata, int idatalen, voi
 			c = 0;
 			len = 0;
 		}
+		char *d0 = malloc(packlen);
+		memcpy(d0, cur, packlen);
+		char *d1 = malloc(packlen);
+		memcpy(d1, d0, packlen);
 		ng_send(net, id, cur, packlen, false, NULL);
+		free(d0);free(d1);
 	}
 	return prolen;
 }
@@ -96,7 +101,9 @@ static void on_connect(struct netengine *net, int id, bool bsuc, void *puser) {
 	else {
 		printf("on connect get remote addr failed\n");
 	}
-	printf("on connect id:%d %s:%d suc:%d user:%p\n", id, szip, port, bsuc, puser);
+	if (!bsuc) {
+		printf("on connect id:%d %s:%d suc:%d user:%p\n", id, szip, port, bsuc, puser);
+	}
 }
 
 static void onmsg(const char *pszMsg) {
@@ -106,8 +113,8 @@ static void onmsg(const char *pszMsg) {
 struct netengine *net = NULL;
 int ipv4id;
 int ipv6id;
-int iconnect_count = 10;
-int wait_time = 30;
+int iconnect_count = 2000;
+int wait_time = 600;
 static int runTest(void *param) {
 	{
 		printf("connect 127.0.0.1:10000 and close\n");
@@ -139,7 +146,7 @@ static int runTest(void *param) {
 		}
 	}
 	for (; i < connect; ++i) {
-		id[i] = ng_connect(net, "::1", 10000);
+		id[i] = ng_connect(net, "127.0.0.1", 10000);
 		if (id[i] < 0) {
 			printf("connect failed %d\n", i);
 		}
@@ -148,7 +155,8 @@ static int runTest(void *param) {
 		ng_set_connect(net, id[i], on_recv, on_connect, on_close, on_error);
 		ng_start(net, id[i]);
 
-		uint len = get_rand(0, 200 * 1024);
+		uint len = get_rand(0, 1024);
+		len = 100;
 		struct pro_head head;
 		head.len = len;
 		head.check = CHECK;
@@ -162,6 +170,7 @@ static int runTest(void *param) {
 		thread_sleep(1000);
 		++c;
 	}
+	printf("close \n");
 
 	for (i = 0; i < connect/2; ++i) {
 		ng_close(net, id[i], true);

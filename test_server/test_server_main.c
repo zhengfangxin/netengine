@@ -160,8 +160,8 @@ int main(int argc, char *argv[]) {
 	void *user = (void*)0x01;
 	ng_run_func(net, run_abc, user);
 
-	ipv4id = ng_listen(net, NULL, 9123, 5000);
-	//ipv6id = ng_listen(net, "::1", 9123, 5000);
+	ipv4id = ng_listen(net, NULL, 10000, 5000);
+	ipv6id = ng_listen(net, "::1", 10000, 5000);
 	if (ipv4id >= 0) {
 		ng_set_listen(net, ipv4id, on_listen, on_accept, on_error);
 	}
